@@ -305,3 +305,22 @@ def merge_sort(arr):
             j += 1
             k += 1
     return arr
+
+def check_barcodes():
+    '''
+    module to check barcodes and print if there are duplicates
+    '''
+    duplicates = []
+    barcodes = []
+    products = shopify.get_all_products()
+    for product in products:
+        for variant in product['variants']:
+            barcode = variant['barcode']
+            if barcode and barcode in barcodes:
+                duplicates.append(barcode)
+            barcodes.append(barcode)
+    if duplicates:
+        for duplicate in duplicates:
+            LOGGER.warning("Duplicate barcode found: %s", duplicate)
+    else:
+        LOGGER.info("No duplicate barcodes found")
