@@ -305,3 +305,41 @@ def merge_sort(arr):
             j += 1
             k += 1
     return arr
+
+def check_barcodes():
+    '''
+    module to check barcodes and print if there are duplicates
+    '''
+    duplicates = []
+    barcodes = []
+    products = shopify.get_all_products()
+    for product in products:
+        for variant in product['variants']:
+            barcode = variant['barcode']
+            if barcode and barcode in barcodes:
+                duplicates.append(barcode)
+            barcodes.append(barcode)
+    if duplicates:
+        for duplicate in duplicates:
+            LOGGER.warning("Duplicate barcode found: %s", duplicate)
+    else:
+        LOGGER.info("No duplicate barcodes found")
+
+def generate_barcodes(product_id):
+    '''
+    module to generate barcodes using shopify variant id as barcode
+    '''
+    product_data = shopify.get_shopify_product_data(product_id)
+    for shopify_variant in product_data['product']['variants']:
+        variant_dict = {}
+        variant_dict['variant'] = {}
+        if shopify_variant['barcode'] == "None" or \
+                shopify_variant['barcode'] == "" \
+                or not shopify_variant["barcode"]:
+            variant_dict['variant']['barcode'] = shopify_variant['id']
+            variant_dict['variant']['id'] = shopify_variant['id']
+            content = shopify.variant_update(variant_dict)
+            if content:
+                LOGGER.info("Success in updating variant %s", shopify_variant['id'])
+            else:
+                LOGGER.error("Something went wrong in updating variant %s", shopify_variant['id'])
