@@ -343,3 +343,18 @@ def generate_barcodes(product_id):
                 LOGGER.info("Success in updating variant %s", shopify_variant['id'])
             else:
                 LOGGER.error("Something went wrong in updating variant %s", shopify_variant['id'])
+
+def find_variant_by_barcode(barcode, products = None):
+    '''
+    Function to find variant by barcode
+    '''
+    if not products:
+        products = shopify.get_all_products()
+    if products:
+        for product in products:
+            for variant in product['variants']:
+                variant_barcode = variant['barcode']
+                if barcode == variant_barcode:
+                    return variant
+        return False
+    return False
