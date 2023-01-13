@@ -1,0 +1,23 @@
+[project]
+name = "com_digitalruiz_shopify_tools"
+version = "0.0.1"
+authors = [
+  { name="Reyes Ruiz", email="reyes@digitalruiz.com" },
+]
+description = "Collections of custom shopify functions"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+  'com-digitalruiz-my-logger',
+  'com-digitalruiz-shopify-apis',
+]
+
+[project.urls]
+"Homepage" = "https://github.com/reyesruiz/shopify_tools"
+"Bug Tracker" = "https://github.com/reyesruiz/shopify_tools/issues"
