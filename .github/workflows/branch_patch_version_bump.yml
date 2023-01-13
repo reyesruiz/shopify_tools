@@ -1,0 +1,67 @@
+name: Branch Patch Version Bump
+on:
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  branch-patch-version-bump:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AUTO_COMMIT }}
+          ref: ${{ github.event.inputs.git_tag }}
+
+      - name: version major 
+        id: version_major
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: 'version.properties'
+          property: 'VERSION_MAJOR'
+      
+      - name: version minor
+        id: version_minor
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: 'version.properties'
+          property: 'VERSION_MINOR'
+
+      - name: version patch
+        id: version_patch
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: 'version.properties'
+          property: 'VERSION_PATCH'
+
+      - name: new version patch
+        id: new_version_patch
+        run: echo "##[set-output name=value;]$(echo "${{ steps.version_patch.outputs.value }} + 1" | bc)"
+
+      - name: Update version patch
+        uses: christian-draeger/write-properties@1.0.1
+        with:
+          path: 'version.properties'
+          property: 'VERSION_PATCH'
+          value: ${{ steps.new_version_patch.outputs.value }}
+
+      - name: version
+        id: version 
+        run: echo "##[set-output name=value;]${{ steps.version_major.outputs.value }}.${{ steps.version_minor.outputs.value }}.${{ steps.new_version_patch.outputs.value }}"
+
+      - name: Update version in pyproject
+        id: new_version_pyproject
+        run: head -2 pyproject.toml > new_pyproject.toml;echo 'version = "${{ steps.version.outputs.value }}"'>> new_pyproject.toml;tail -n +4 pyproject.toml >> new_pyproject.toml;mv new_pyproject.toml pyproject.toml
+
+      - name: Delete extra file
+        id: delete_extra_file
+        run: if [ -f version.propertiesr ]; then rm version.propertiesr; fi
+        
+      - name: Push new files back to branch.
+        uses: stefanzweifel/git-auto-commit-action@v4.14.1
+        with:
+          commit_message: "#Patch version bump, #skip-ci"
+          status_options: '--untracked-files=no'
+          disable_globbing: true
