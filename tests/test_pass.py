@@ -6,4 +6,4 @@ def test_placeholder():
     '''
     Placeholder to make tests pass
     '''
-    return True
+    assert True
