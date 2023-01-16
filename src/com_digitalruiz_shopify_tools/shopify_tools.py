@@ -324,10 +324,12 @@ def check_barcodes():
             LOGGER.warning("Duplicate barcode found: %s", duplicate)
     else:
         LOGGER.info("No duplicate barcodes found")
+    return duplicates
 
 def generate_barcodes(product_id):
     '''
     module to generate barcodes using shopify variant id as barcode
+    return False if there is any error, else return True
     '''
     product_data = shopify.get_shopify_product_data(product_id)
     for shopify_variant in product_data['product']['variants']:
@@ -343,6 +345,8 @@ def generate_barcodes(product_id):
                 LOGGER.info("Success in updating variant %s", shopify_variant['id'])
             else:
                 LOGGER.error("Something went wrong in updating variant %s", shopify_variant['id'])
+                return False
+    return True
 
 def find_variant_by_barcode(barcode, products = None):
     '''
