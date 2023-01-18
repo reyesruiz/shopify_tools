@@ -331,22 +331,33 @@ def generate_barcodes(product_id):
     module to generate barcodes using shopify variant id as barcode
     return False if there is any error, else return True
     '''
+    result = {}
+    result['status'] = "Success"
+    result['product_id'] = product_id
+    result['variants'] = []
     product_data = shopify.get_shopify_product_data(product_id)
+    result['title'] = product_data['product']['title']
     for shopify_variant in product_data['product']['variants']:
         variant_dict = {}
         variant_dict['variant'] = {}
+        variant_dict['variant']['id'] = shopify_variant['id']
         if shopify_variant['barcode'] == "None" or \
                 shopify_variant['barcode'] == "" \
                 or not shopify_variant["barcode"]:
             variant_dict['variant']['barcode'] = shopify_variant['id']
-            variant_dict['variant']['id'] = shopify_variant['id']
             content = shopify.variant_update(variant_dict)
             if content:
                 LOGGER.info("Success in updating variant %s", shopify_variant['id'])
+                variant_dict['variant']['status'] = "Success"
             else:
                 LOGGER.error("Something went wrong in updating variant %s", shopify_variant['id'])
-                return False
-    return True
+                variant_dict['variant']['status'] = "Failed"
+                result['status'] = "Failed"
+        else:
+            variant_dict['variant']['status'] = "Exists"
+        variant_dict['variant']['title'] = shopify_variant['title']
+        result['variants'].append(variant_dict['variant'])
+    return result
 
 def find_variant_by_barcode(barcode, products = None):
     '''
