@@ -213,7 +213,7 @@ def update_variant(parsed_variant, shopify_variant):
         if str(shopify_variant['barcode']) != str(parsed_variant['barcode']):
             LOGGER.info("UPC difference, changing from %s to %s", \
                     shopify_variant['barcode'], parsed_variant['barcode'])
-            variant_dict['variant']["barcode"] =  parsed_variant['barcode']
+            #variant_dict['variant']["barcode"] =  parsed_variant['barcode']
     if variant_dict['variant']:
         LOGGER.info("Updating variant %s", shopify_variant['id'])
         variant_dict['variant']['id'] = shopify_variant['id']
