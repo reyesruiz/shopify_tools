@@ -379,3 +379,16 @@ def find_variant_by_barcode(barcode, products = None):
                     return variant
         return False
     return False
+
+def find_product_by_sku(sku, products = None):
+    '''
+    Function to find products by sku
+    '''
+    if not products:
+        products = shopify.get_all_products()
+    if products:
+        for product in products:
+            for variant in product['variants']:
+                if sku == variant['sku']:
+                    return product
+    return False
