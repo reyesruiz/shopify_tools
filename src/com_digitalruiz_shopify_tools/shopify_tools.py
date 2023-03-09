@@ -203,9 +203,15 @@ def update_variant(parsed_variant, shopify_variant):
     variant_dict['variant'] = {}
     #Price
     if float(shopify_variant['price']) != float(parsed_variant['price']):
-        LOGGER.info("Price difference, changing from %s to %s", \
-                shopify_variant['price'], parsed_variant['price'])
-        variant_dict['variant']["price"] =  parsed_variant['price']
+        if float(parsed_variant['price']) > float(shopify_variant['price']):
+            LOGGER.info("Price difference, for sku %s %s changing from %s to %s", \
+                    shopify_variant['sku'], shopify_variant['title'], \
+                    shopify_variant['price'], parsed_variant['price'])
+            variant_dict['variant']["price"] =  parsed_variant['price']
+        else:
+            LOGGER.info("Price difference is lower, for sku %s %s changing from %s to %s", \
+                    shopify_variant['sku'], shopify_variant['title'], \
+                    shopify_variant['price'], parsed_variant['price'])
     #Barcode checking if it is none or empty, dont want to change something that is already set
     if shopify_variant['barcode'] == "None" \
             or shopify_variant['barcode'] == "" \
