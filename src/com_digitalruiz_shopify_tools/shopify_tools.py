@@ -15,17 +15,23 @@ def add_product(product_dict):
     add product function
     '''
     shopify_product_json = {}
-    product_id = ""
-    variant_ids = []
     shopify_product_json['product'] = product_dict
     content = shopify.create_product(shopify_product_json)
     if content:
         shopify_product = json.loads(content)
-        product_id = shopify_product['product']['id']
-        for variant in shopify_product['product']['variants']:
-            variant_ids.append(variant['id'])
-        #sort_options(product_id)
         return shopify_product
+    return False
+
+def create_image(product_id, image_dict):
+    '''
+    Create an image in shopify
+    '''
+    shopify_image_json = {}
+    shopify_image_json['image'] = image_dict
+    content = shopify.create_product_image(product_id, shopify_image_json)
+    if content:
+        shopify_image = json.loads(content)
+        return shopify_image
     return False
 
 def create_images(product_id, product_dict, variant_ids):
