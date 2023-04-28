@@ -15,23 +15,23 @@ def add_product(product_dict):
     add product function
     '''
     shopify_product_json = {}
-    product_id = ""
-    variant_ids = []
-    shopify_product_json['product'] = {'title': product_dict['title'], \
-            'body_html': product_dict['description'], \
-            'vendor': product_dict['vendor'], \
-            'status': product_dict['status'], \
-            'options': product_dict['options'], \
-            'variants': product_dict['variants'], \
-            'tags': product_dict['tags']}
+    shopify_product_json['product'] = product_dict
     content = shopify.create_product(shopify_product_json)
     if content:
         shopify_product = json.loads(content)
-        product_id = shopify_product['product']['id']
-        for variant in shopify_product['product']['variants']:
-            variant_ids.append(variant['id'])
-        #sort_options(product_id)
-        return product_id, variant_ids
+        return shopify_product
+    return False
+
+def create_image(product_id, image_dict):
+    '''
+    Create an image in shopify
+    '''
+    shopify_image_json = {}
+    shopify_image_json['image'] = image_dict
+    content = shopify.create_product_image(product_id, shopify_image_json)
+    if content:
+        shopify_image = json.loads(content)
+        return shopify_image
     return False
 
 def create_images(product_id, product_dict, variant_ids):
@@ -135,6 +135,10 @@ def check_product(product_id, product_dict):
     if product_dict['description'] != shopify_product_data['product']['body_html']:
         LOGGER.info("Updating body html")
         shopify_product_json['product']['body_html'] = product_dict['description']
+    if product_dict['title'] != shopify_product_data['product']['title']:
+        LOGGER.info("Updating title")
+    shopify_product_json['product']['title'] = product_dict['title']
+    shopify_product_json['product']['handle'] = ''
     #Update product:
     if shopify_product_json['product']:
         content = shopify.product_update(product_id, shopify_product_json)
