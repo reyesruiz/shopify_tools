@@ -5,6 +5,7 @@ Copyright 2023 Reyes Ruiz
 import sys
 import json
 import re
+from pathlib import Path
 from com_digitalruiz_my_logger import my_logger
 from com_digitalruiz_shopify_apis import shopify_apis as shopify
 
@@ -395,4 +396,19 @@ def find_product_by_sku(sku, products = None):
             for variant in product['variants']:
                 if sku == variant['sku']:
                     return product
+    return False
+
+def add_product_to_local_file(product):
+    '''
+    Function to add newly created product to local file all_products.json
+    '''
+    file_name = "all_products.json"
+    if Path(file_name).is_file():
+        with open(file_name, "r", encoding='utf-8') as json_file:
+            products = json.load(json_file)
+        if products:
+            products.append(product['product'])
+            with open(file_name, "w", encoding='utf-8') as json_file:
+                json.dump(products, json_file)
+                return True
     return False
