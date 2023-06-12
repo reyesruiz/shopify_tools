@@ -398,6 +398,18 @@ def find_product_by_sku(sku, products = None):
                     return product
     return False
 
+def find_product_by_id(product_id, products = None):
+    '''
+    Function to find product by product id
+    '''
+    if not products:
+        products = shopify.get_all_products()
+    if products:
+        for product in products:
+            if product['id'] == product_id:
+                return product
+    return False
+
 def add_product_to_local_file(product):
     '''
     Function to add newly created product to local file all_products.json
