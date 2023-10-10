@@ -258,12 +258,12 @@ def merge_sort_variants(arr_var):
             arr_var = merge_sort(arr_var)
         else:
             size_chart_order = load_size_chart_order()
-            for size_type in size_chart_order['size_chart_order']:
-                for size in size_type['sizes']:
-                    for keyword in size['keywords']:
-                        if arr_var[0]['option2'].lower() == keyword.lower():
-                            merge_sort_sizes(arr_var, size_type['sizes'])
-                            break
+            for size_type, _, keyword in ((a,b,c)\
+                    for a in size_chart_order['size_chart_order'] \
+                    for b in a['sizes'] for c in b['keywords']):
+                if arr_var[0]['option2'].lower() == keyword.lower():
+                    merge_sort_sizes(arr_var, size_type['sizes'])
+                    break
     return arr_var
 
 def get_size_order_position(variant_size, sizes):
