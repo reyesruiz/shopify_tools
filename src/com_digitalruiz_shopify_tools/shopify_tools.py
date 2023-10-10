@@ -254,35 +254,63 @@ def merge_sort_variants(arr_var):
     '''
     if len(arr_var) > 1:
         match_digits = re.search(r'^\d*$', arr_var[0]['option2'])
-        if not match_digits:
-            return arr_var
-        mid = len(arr_var)//2
-        left = arr_var[:mid]
-        right = arr_var[mid:]
-        merge_sort_variants(left)
-        merge_sort_variants(right)
+        if match_digits:
+            arr_var = merge_sort(arr_var)
+        else:
+            size_chart_order = load_size_chart_order()
+            for size_type in size_chart_order['size_chart_order']:
+                for size in size_type['sizes']:
+                    for keyword in size['keywords']:
+                        if arr_var[0]['option2'].lower() == keyword.lower():
+                            merge_sort_sizes(arr_var, size_type['sizes'])
+                            break
+    return arr_var
+
+def get_size_order_position(variant_size, sizes):
+    '''
+    get size position
+    '''
+    position = 1000
+    count = 0
+    for size in sizes:
+        for keyword in size['keywords']:
+            if variant_size.lower() == keyword.lower():
+                position = count
+                break
+        count = count + 1
+    return position
+
+def merge_sort_sizes(arr, sizes):
+    '''
+    merge sort size
+    '''
+    if len(arr) > 1:
+        mid = len(arr)//2
+        left = arr[:mid]
+        right = arr[mid:]
+        merge_sort_sizes(left, sizes)
+        merge_sort_sizes(right, sizes)
         i = j = k = 0
         while i < len(left) and j < len(right):
-            match_left = re.search(r'^(\d*\.\d*|\d*)', left[i]['option2'])
-            size_left = float(match_left.group(1))
-            match_right = re.search(r'^(\d*\.\d*|\d*)', right[j]['option2'])
-            size_right = float(match_right.group(1))
-            if size_left < size_right:
-                arr_var[k] = left[i]
+            size_left_position = get_size_order_position(left[i]['option2'], sizes)
+            size_right_position = get_size_order_position(right[j]['option2'], sizes)
+            if size_left_position < size_right_position:
+                arr[k] = left[i]
                 i += 1
             else:
-                arr_var[k] = right[j]
+                arr[k] = right[j]
                 j += 1
             k += 1
         while i < len(left):
-            arr_var[k] = left[i]
+            arr[k] = left[i]
             i += 1
             k += 1
         while j < len(right):
-            arr_var[k] = right[j]
+            arr[k] = right[j]
             j += 1
             k += 1
-    return arr_var
+    return arr, sizes
+
 
 def merge_sort(arr):
     '''
@@ -424,3 +452,12 @@ def add_product_to_local_file(product):
                 json.dump(products, json_file)
                 return True
     return False
+
+def load_size_chart_order():
+    '''
+    module to load json file that contains size chart order
+    '''
+    file_name = 'size_chart_order.json'
+    with open(file_name, "r", encoding="utf-8") as size_chart_order_file:
+        size_chart_order = json.load(size_chart_order_file)
+    return size_chart_order
