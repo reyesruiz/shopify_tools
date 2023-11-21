@@ -255,7 +255,18 @@ def merge_sort_variants(arr_var):
     if len(arr_var) > 1:
         match_digits = re.search(r'^\d*$', arr_var[0]['option2'])
         if match_digits:
-            arr_var = merge_sort(arr_var)
+            digit_sizes = []
+            sizes = []
+            for variant in arr_var:
+                digit_sizes.append(variant['option2'])
+            digit_sizes = list( dict.fromkeys(digit_sizes))
+            merge_sort(digit_sizes)
+            for size in digit_sizes:
+                size_element = {}
+                size_element['name'] = size
+                size_element['keywords'] = [size]
+                sizes.append(size_element)
+            merge_sort_sizes(arr_var, sizes)
         else:
             size_chart_order = load_size_chart_order()
             for size_type, _, keyword in ((a,b,c)\
