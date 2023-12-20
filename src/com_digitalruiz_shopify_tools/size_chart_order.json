@@ -1,0 +1,125 @@
+{
+  "size_chart_order": [
+    {
+      "name": "clothing1",
+      "sizes": [
+        {
+          "name": "XX-Small",
+          "keywords": [
+            "xxs",
+            "xx-s",
+            "xtraxtrasmall",
+            "xtra-xtra-small"
+          ]
+        },
+        {
+          "name": "X-Small",
+          "keywords": [
+            "xs",
+            "x-small",
+            "xtra-small"
+          ]
+        },
+        {
+          "name": "Small",
+          "keywords": [
+            "s",
+            "sml",
+            "small"
+          ]
+        },
+        {
+          "name": "Medium",
+          "keywords": [
+            "m",
+            "med",
+            "medium"
+          ]
+        },
+        {
+          "name": "Large",
+          "keywords": [
+            "l",
+            "lg",
+            "large"
+          ]
+        },
+        {
+          "name": "X-Large",
+          "keywords": [
+            "XL",
+            "X-Large",
+            "XtraLarge",
+            "Xtra-Lage"
+          ]
+        },
+        {
+          "name": "2XL",
+          "keywords": [
+            "xxl",
+            "xx-l",
+            "2xl",
+            "2-xl",
+            "2xtralarge",
+            "2-xtralarge",
+            "2-xtra-large",
+            "xtraxtralarge",
+            "xtra-xtra-large"
+          ]
+        },
+        {
+          "name": "3XL",
+          "keywords": [
+            "xxxl",
+            "xxx-l",
+            "3xl",
+            "3-xl",
+            "3xtralarge",
+            "3-xtralarge",
+            "3-xtra-large",
+            "xtraxtraxtraxtralarge",
+            "xtra-xtra-xtra-large"
+          ]
+        },
+        {
+          "name": "4XL",
+          "keywords": [
+            "xxxxl",
+            "xxxx-l",
+            "4xl",
+            "4-xl",
+            "4xtralarge",
+            "4-xtralarge",
+            "4-xtra-large",
+            "xtraxtraxtraxtralarge",
+            "xtra-xtra-xtra-xtra-large"
+          ]
+        },
+        {
+          "name": "1X",
+          "keywords": [
+            "1x"
+          ]
+        },
+        {
+          "name": "2X",
+          "keywords": [
+            "2x"
+          ]
+        },
+        {
+          "name": "3X",
+          "keywords": [
+            "3x"
+          ]
+        },
+        {
+          "name": "4X",
+          "keywords": [
+            "4x"
+          ]
+        }
+      ]
+    }
+  ]
+}

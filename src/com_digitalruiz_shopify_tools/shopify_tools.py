@@ -253,16 +253,29 @@ def merge_sort_variants(arr_var):
     merge sort variant array
     '''
     if len(arr_var) > 1:
+        option = 'option2'
         match_digits = re.search(r'^\d*$', arr_var[0]['option2'])
         if match_digits:
-            arr_var = merge_sort(arr_var)
+            digit_sizes = []
+            sizes = []
+            for variant in arr_var:
+                digit_sizes.append(variant['option2'])
+            digit_sizes = list( dict.fromkeys(digit_sizes))
+            merge_sort(digit_sizes)
+            for size in digit_sizes:
+                size_element = {}
+                size_element['name'] = size
+                size_element['keywords'] = [size]
+                sizes.append(size_element)
+            merge_sort_sizes(arr_var, sizes, option)
+            match_digits = re.search(r'^\d*$', arr_var[0]['option3'])
         else:
             size_chart_order = load_size_chart_order()
             for size_type, _, keyword in ((a,b,c)\
                     for a in size_chart_order['size_chart_order'] \
                     for b in a['sizes'] for c in b['keywords']):
                 if arr_var[0]['option2'].lower() == keyword.lower():
-                    merge_sort_sizes(arr_var, size_type['sizes'])
+                    merge_sort_sizes(arr_var, size_type['sizes'], option)
                     break
     return arr_var
 
@@ -280,7 +293,7 @@ def get_size_order_position(variant_size, sizes):
         count = count + 1
     return position
 
-def merge_sort_sizes(arr, sizes):
+def merge_sort_sizes(arr, sizes, option):
     '''
     merge sort size
     '''
@@ -288,12 +301,12 @@ def merge_sort_sizes(arr, sizes):
         mid = len(arr)//2
         left = arr[:mid]
         right = arr[mid:]
-        merge_sort_sizes(left, sizes)
-        merge_sort_sizes(right, sizes)
+        merge_sort_sizes(left, sizes, option)
+        merge_sort_sizes(right, sizes, option)
         i = j = k = 0
         while i < len(left) and j < len(right):
-            size_left_position = get_size_order_position(left[i]['option2'], sizes)
-            size_right_position = get_size_order_position(right[j]['option2'], sizes)
+            size_left_position = get_size_order_position(left[i][option], sizes)
+            size_right_position = get_size_order_position(right[j][option], sizes)
             if size_left_position < size_right_position:
                 arr[k] = left[i]
                 i += 1
