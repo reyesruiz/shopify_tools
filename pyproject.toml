@@ -1,6 +1,6 @@
 [project]
 name = "com_digitalruiz_shopify_tools"
-version = ""
+version = "0.0.15"
 authors = [
   { name="Reyes Ruiz", email="reyes@digitalruiz.com" },
 ]
