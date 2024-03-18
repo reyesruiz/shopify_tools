@@ -33,7 +33,7 @@ jobs:
 
       - name: Update version in pyproject
         id: update_version
-        run: sed -i -E  "s/version = \"${{ steps.version.outputs.PACKAGE_VERSION }}\"/version = \"${{ steps.new_version.outputs.NEW_PACKAGE_VERSION_PATCH }}\"/" pyproject.toml
+        run: sed -i -E  "s/version = \"${{ steps.version.outputs.PACKAGE_VERSION }}\"/version = \"${{ steps.new_version.outputs.NEW_PACKAGE_VERSION }}\"/" pyproject.toml
 
       - name: Push new files back to branch.
         uses: stefanzweifel/git-auto-commit-action@v4.14.1
