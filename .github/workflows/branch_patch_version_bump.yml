@@ -17,21 +17,21 @@ jobs:
 
       - name: version major 
         id: version_major
-        uses: christian-draeger/read-properties@1.1.1
+        uses: christian-draeger/read-properties@1.0.1
         with:
           path: 'version.properties'
           property: 'VERSION_MAJOR'
       
       - name: version minor
         id: version_minor
-        uses: christian-draeger/read-properties@1.1.1
+        uses: christian-draeger/read-properties@1.0.1
         with:
           path: 'version.properties'
           property: 'VERSION_MINOR'
 
       - name: version patch
         id: version_patch
-        uses: christian-draeger/read-properties@1.1.1
+        uses: christian-draeger/read-properties@1.0.1
         with:
           path: 'version.properties'
           property: 'VERSION_PATCH'
