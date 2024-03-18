@@ -15,26 +15,11 @@ jobs:
           token: ${{ secrets.AUTO_COMMIT }}
           ref: ${{ github.event.inputs.git_tag }}
 
-      - name: version major
-        id: version_major
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: 'version.properties'
-          property: 'VERSION_MAJOR'
-      
-      - name: version minor
-        id: version_minor
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: 'version.properties'
-          property: 'VERSION_MINOR'
 
-      - name: version patch
-        id: version_patch
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: 'version.properties'
-          property: 'VERSION_PATCH'
+      - name: version
+        id: version
+        run: |
+          echo "PACKAGE_VERSION=$(cat pyproject.toml |grep 'version ='|awk -F\= '{print $2}'|awk '{$1=$1;print}'|sed 's/\"//g')" >> $GITHUB_OUTPUT
 
       - name: Setup python 
         id: setup_python 
@@ -68,16 +53,12 @@ jobs:
           name: my-artifact 
           path: dist/* 
 
-      - name: tag name
-        id: tag_name
-        run: echo "##[set-output name=value;]${{ steps.version_major.outputs.value }}.${{ steps.version_minor.outputs.value }}.${{ steps.version_patch.outputs.value }}"
-
       - name: tag
         id: tag
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.AUTO_COMMIT }}
-          custom_tag: ${{ steps.tag_name.outputs.value }}
+          custom_tag: ${{ steps.version.outputs.PACKAGE_VERSION }}
           tag_prefix: ''
 
       - name: Create Release
