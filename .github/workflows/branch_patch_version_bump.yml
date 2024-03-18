@@ -38,7 +38,7 @@ jobs:
 
       - name: new version patch
         id: new_version_patch
-        run: echo "##[set-output name=value;]$(echo "${{ steps.version_patch.outputs.value }} + 1" | bc)"
+        run: echo "{value}={$(echo "${{ steps.version_patch.outputs.value }} + 1" | bc)}" >> $GITHUB_OUTPUT
 
       - name: Update version patch
         uses: christian-draeger/write-properties@1.0.1
@@ -49,7 +49,7 @@ jobs:
 
       - name: version
         id: version 
-        run: echo "##[set-output name=value;]${{ steps.version_major.outputs.value }}.${{ steps.version_minor.outputs.value }}.${{ steps.new_version_patch.outputs.value }}"
+        run: echo "{name}=value={${{ steps.version_major.outputs.value }}.${{ steps.version_minor.outputs.value }}.${{ steps.new_version_patch.outputs.value }}}" >> $GITHUB_OUTPUT
 
       - name: Update version in pyproject
         id: new_version_pyproject
